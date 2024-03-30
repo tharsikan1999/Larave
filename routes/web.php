@@ -16,14 +16,16 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    Inertia::render('Dashboard');
+    return redirect()->route('students.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/Students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/Students/create', [StudentController::class, 'create'])->name('students.create');
 });
 
 
