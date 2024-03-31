@@ -108,6 +108,8 @@ class StudentController extends Controller
      */
     public function update(Request $request, Students $Student)
     {
+
+    
         // Validate the request data
         $request->validate([
             'email' => 'required|email ',
@@ -115,18 +117,59 @@ class StudentController extends Controller
             'lastname' => 'required',
             'age' => 'required|numeric | min:1  | max:100',
             'status' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
         ]);
         
+        // Check if an image file is provided
+        if ($request->hasFile('image')) {
 
-        $data = $request->all();
+            if ($Student->image) {
+                $filePath = public_path($Student->image);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+            // Get the original file name
+            $originalName = $request->file('image')->getClientOriginalName();
+            
+            // Generate a unique file name
+            $fileName = time() . '_' . $originalName;
+            
+            // Move the file to the 'public/images' directory
+            $request->file('image')->move(public_path('images'), $fileName);
 
-        if($Student->update($data)){
+            // Update the student record with the new image file
+
+            $data = $request->all();
+
+
+            $data['image'] = 'images/' . $fileName;
+
+            $Student->update($data);
+
+            // Delete the old image file if it exists
+            
+
+            return redirect()->route('students.index')->with('success', 'Student updated successfully');
+
+
+            
+
+        } else {
+            // If no image is provided, set $fileName to null
+            $fileName = null;
+
+            $data = $request->all();
+
+            $Student->update($data);
+
+        }
+       
+        
             
             return redirect()->route('students.index')->with('success', 'Student updated successfully');
-        }
-        else{
-            dd('Student not updated');
-        }
+        
         
         
     }

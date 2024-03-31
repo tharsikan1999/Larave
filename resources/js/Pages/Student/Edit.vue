@@ -18,16 +18,38 @@ const studentData = ref({
     lastname: props.student.lastname,
     age: props.student.age,
     status: props.student.status,
+    image: props.student.image,
 });
+
+const handleImageChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+        // Update studentData with the selected file
+        studentData.value.image = file;
+    }
+};
+
+const formDataName = "updateStudentForm";
 
 // Method to submit the form
 const submitForm = async () => {
     try {
-        // Send a PUT request to update the student details
-        await Inertia.put(
-            route("students.update", props.student.id),
-            studentData.value
-        );
+        // Check if image has changed
+        if (studentData.value.image) {
+            // If the image has changed, submit the form as POST
+            await Inertia.post(
+                route("students.update", props.student.id),
+                studentData.value,
+                { headers: { "X-HTTP-Method-Override": "PUT" } }
+            );
+        } else {
+            // If the image has not changed, submit the form as PUT
+            await Inertia.put(
+                route("students.update", props.student.id),
+                studentData.value
+            );
+        }
     } catch (error) {
         console.error("Error updating student:", error);
     }
@@ -129,7 +151,30 @@ const submitForm = async () => {
                         >Status</label
                     >
                 </div>
+                <!-- Profile picture input -->
+                <div class="relative z-0 w-full mb-5 group">
+                    <label
+                        for="user_avatar"
+                        class="block mb-2 text-sm font-medium text-gray-900"
+                        >Upload file</label
+                    >
+                    <input
+                        type="file"
+                        name="image"
+                        id="user_avatar"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        aria-describedby="user_avatar_help"
+                        @change="handleImageChange"
+                    />
 
+                    <div
+                        class="mt-1 text-sm text-gray-500"
+                        id="user_avatar_help"
+                    >
+                        A profile picture is useful to confirm you are logged
+                        into your account
+                    </div>
+                </div>
                 <!-- Submit button -->
                 <button
                     type="submit"
