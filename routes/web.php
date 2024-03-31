@@ -24,8 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/Students', [StudentController::class, 'index'])->name('students.index');
-    Route::get('/Students/create', [StudentController::class, 'create'])->name('students.create');
+   
+    Route::prefix('Students')->group(function () {
+        Route::get('/', [StudentController::class, 'index'])->name('students.index');
+        Route::get('/Create', [StudentController::class, 'create'])->name('students.create');
+        Route::post('/Store', [StudentController::class, 'store'])->name('students.store');
+        Route::get('/{Student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+        Route::put('/{Student}', [StudentController::class, 'update'])->name('students.update');
+        Route::delete('/{Students}', [StudentController::class, 'destroy'])->name('students.delete');
+    });
+
 });
 
 

@@ -1,7 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
+import { Inertia } from "@inertiajs/inertia";
+import { Head, useForm } from "@inertiajs/vue3";
 import { defineProps, defineExpose } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const userImg = "/imgs/user.jpg";
 
@@ -34,11 +38,30 @@ const getStatusColor = (status) => {
     };
 };
 
+const deleteForm = useForm({
+    id: null,
+});
+
+// Function to handle the add button click
+const handleEdit = (route) => {
+    // Navigate to edit route
+    Inertia.visit(route);
+};
+
+// Function to handle the delete button click
+
+const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this student?")) {
+        deleteForm.delete(route("students.delete", id));
+    }
+};
+
 // Function to handle the add button click
 
 defineExpose({
     formatDate,
     getStatusColor,
+    handleEdit,
 });
 </script>
 
@@ -67,6 +90,7 @@ defineExpose({
                     <tr>
                         <th scope="col" class="px-6 py-3">ID</th>
                         <th scope="col" class="px-6 py-3">NAME</th>
+                        <th scope="col" class="px-6 py-3">AGE</th>
                         <th scope="col" class="px-6 py-3">Create At</th>
                         <th scope="col" class="px-6 py-3">Status</th>
                         <th scope="col" class="px-6 py-3 text-center">
@@ -102,6 +126,9 @@ defineExpose({
                             </div>
                         </th>
                         <td class="px-6 py-4">
+                            {{ student.age }}
+                        </td>
+                        <td class="px-6 py-4">
                             {{ formatDate(student.created_at) }}
                         </td>
                         <td class="px-6 py-4">
@@ -113,15 +140,21 @@ defineExpose({
                         </td>
                         <td class="px-6 py-4 flex items-center justify-evenly">
                             <a
-                                href="#"
+                                @click="
+                                    handleEdit(
+                                        route('students.edit', student.id)
+                                    )
+                                "
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                >Edit user</a
                             >
+                                <font-awesome-icon :icon="faEdit" />
+                            </a>
                             <a
-                                href="#"
-                                class="font-medium text-red-600 dark:red-blue-500 hover:underline"
-                                >Delete user</a
+                                @click="handleDelete(student.id)"
+                                class="font-medium text-red-600 dark:text-red-500 hover:underline"
                             >
+                                <font-awesome-icon :icon="faTrash" />
+                            </a>
                         </td>
                     </tr>
                 </tbody>
