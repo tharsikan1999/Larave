@@ -98,6 +98,7 @@ class StudentController extends Controller
      */
     public function edit(Students $Student)
     {
+        
         $student = Students::find($Student->id);
         
         return inertia('Student/Edit', ['student' => $student]);

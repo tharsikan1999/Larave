@@ -11,16 +11,15 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('/dashboard', function () {
-    Inertia::render('Dashboard');
     return redirect()->route('students.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-   
-    Route::prefix('Students')->group(function () {
+
+    Route::prefix('Students')->middleware('auth')->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('students.index');
         Route::get('/Create', [StudentController::class, 'create'])->name('students.create');
         Route::post('/Store', [StudentController::class, 'store'])->name('students.store');
@@ -28,8 +27,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/{Student}', [StudentController::class, 'update'])->name('students.update');
         Route::delete('/{Students}', [StudentController::class, 'destroy'])->name('students.delete');
     });
-
 });
+
+
 
 
 
