@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
-const userImg = "/imgs/user.jpg";
+const userImg = "/DefaultImages/man.png";
 
 const props = defineProps({
     students: {
@@ -114,8 +114,8 @@ defineExpose({
                         >
                             <img
                                 class="w-10 h-10 rounded-full"
-                                :src="userImg"
-                                alt="Jese image"
+                                :src="student.image ? student.image : userImg"
+                                alt="User image"
                             />
                             <div class="ps-3">
                                 <div class="text-base font-semibold">
@@ -127,6 +127,7 @@ defineExpose({
                                 </div>
                             </div>
                         </th>
+
                         <td class="px-6 py-4">
                             {{ student.age }}
                         </td>
@@ -147,13 +148,13 @@ defineExpose({
                                         route('students.edit', student.id)
                                     )
                                 "
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
                             >
                                 <font-awesome-icon :icon="faEdit" />
                             </a>
                             <a
                                 @click="handleDelete(student.id)"
-                                class="font-medium text-red-600 dark:text-red-500 hover:underline"
+                                class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
                             >
                                 <font-awesome-icon :icon="faTrash" />
                             </a>

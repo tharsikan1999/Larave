@@ -108,6 +108,32 @@
                     <p class="text-red-500 text-xs mt-1">{{ errors.status }}</p>
                 </div>
 
+                <!-- Profile picture input -->
+                <div class="relative z-0 w-full mb-5 group">
+                    <label
+                        for="user_avatar"
+                        class="block mb-2 text-sm font-medium text-gray-900"
+                        >Upload file</label
+                    >
+                    <input
+                        type="file"
+                        name="image"
+                        id="user_avatar"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        aria-describedby="user_avatar_help"
+                        @change="handleImageChange"
+                    />
+                    <!-- Error message -->
+                    <p class="text-red-500 text-xs mt-1">{{ errors.status }}</p>
+                    <div
+                        class="mt-1 text-sm text-gray-500"
+                        id="user_avatar_help"
+                    >
+                        A profile picture is useful to confirm you are logged
+                        into your account
+                    </div>
+                </div>
+
                 <!-- Submit button -->
                 <button
                     type="submit"
@@ -137,6 +163,7 @@ export default {
             lastname: "",
             age: "",
             status: "",
+            image: "",
         });
 
         // Error messages
@@ -148,30 +175,16 @@ export default {
             status: "",
         });
 
+        const handleImageChange = (event) => {
+            // Update image property with the selected file
+            formData.value.image = event.target.files[0];
+        };
+
         const submitForm = () => {
             // Reset errors
             Object.keys(errors.value).forEach((key) => {
                 errors.value[key] = "";
             });
-
-            // Validation
-            if (!formData.value.email.trim()) {
-                errors.value.email = "Email is required";
-            }
-            if (!formData.value.firstname.trim()) {
-                errors.value.firstname = "First name is required";
-            }
-            if (!formData.value.lastname.trim()) {
-                errors.value.lastname = "Last name is required";
-            }
-            if (!formData.value.age.toString().trim()) {
-                errors.value.age = "Age is required";
-            } else if (isNaN(formData.value.age)) {
-                errors.value.age = "Please enter a valid age";
-            }
-            if (!formData.value.status) {
-                errors.value.status = "Status is required";
-            }
 
             // If there are no errors, submit the form
             if (Object.values(errors.value).every((error) => !error)) {
@@ -179,7 +192,7 @@ export default {
             }
         };
 
-        return { formData, errors, submitForm };
+        return { formData, errors, submitForm, handleImageChange };
     },
 };
 </script>

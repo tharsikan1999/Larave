@@ -38,27 +38,49 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'email' => 'required|email',
-            'firstname' => 'required', // Corrected field name
-            'lastname' => 'required',
-            'age' => 'required|numeric',
-            'status' => 'required',
-        ]);
-        // Extract the attributes from the request
-        $attributes = [
-            'email' => $request->input('email'),
-            'firstname' => $request->input('firstname'), // Corrected field name
-            'lastname' => $request->input('lastname'),
-            'age' => $request->input('age'),
-            'status' => $request->input('status'),
-        ];
+        try {
+            // Validate the request data
+            $request->validate([
+                'email' => 'required|email',
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'age' => 'required|numeric|min:1|max:100',
+                'status' => 'required',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
     
-        // Create a new student record with the extracted attributes
-        Students::create($attributes);
+            // Check if an image file is provided
+            if ($request->hasFile('image')) {
+                // Get the original file name
+                $originalName = $request->file('image')->getClientOriginalName();
     
-        return redirect()->route('students.index')->with('success', 'Student created successfully');
+                // Generate a unique file name
+                $fileName = time() . '_' . $originalName;
+    
+                // Move the file to the 'public/images' directory
+                $request->file('image')->move(public_path('images'), $fileName);
+            } else {
+                // If no image is provided, set $fileName to null
+                $fileName = null;
+            }
+    
+            // Create a new student record
+            $student = Students::create([
+                'email' => $request->email,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'age' => $request->age,
+                'status' => $request->status,
+                'image' => $fileName ? 'images/' . $fileName : null, // Assign the path to the 'image' column
+            ]);
+    
+            // Redirect with success message if student is created successfully
+            return redirect()->route('students.index')->with('success', 'Student created successfully.');
+    
+        } catch (\Exception $e) {
+            // Handle any errors
+            return redirect()->back()->with('error', 'Failed to create student: ' . $e->getMessage());
+        }
     }
     
 
@@ -114,9 +136,18 @@ class StudentController extends Controller
      */
     public function destroy(Students $Students)
     {
+        // Delete the file associated with the student if it exists
+        if ($Students->image) {
+            $filePath = public_path($Students->image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+    
+        // Delete the student record
         $Students->delete();
-
+    
         return redirect()->route('students.index')->with('success', 'Student deleted successfully');
-
     }
+    
 }

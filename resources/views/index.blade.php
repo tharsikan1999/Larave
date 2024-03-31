@@ -1,144 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management System</title>
     <style>
-        /* Your existing CSS styles */
+        /* Global styles */
         body {
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure the body fills the viewport height */
-            background-color: #f0f0f0; /* Set a background color in case the image doesn't cover the entire viewport */
-            position: relative;
-            background-color: #333;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh;
+            background: linear-gradient(to top right, #000000, #ff0000, #000000, #ff0000); /* Gradient colors */
+            color: #fff; /* Text color */
+            overflow: hidden; /* Hide overflow during loading */
         }
-        
-        h1 {
-            text-align: center;
-            color: #fff;
-            z-index: 1;
-            position: relative; /* Ensure the heading appears above the background images */
-            margin-top: auto; /* Center the heading vertically */
-            margin-bottom: auto; /* Center the heading vertically */
-        }
-        
-        .background-left-top,
-        .background-right-bottom {
-            position: absolute;
-            z-index: 0;
-            height: 100vh;
-            max-width: 50vw; /* Set maximum width to 50% of viewport width */
-        }
-        
-        .background-left-top {
-            left: 0;
-            top: 0;
-            width: auto;
-        }
-        
-        .background-right-bottom {
-            right: 0;
-            bottom: 0;
-            transform: rotate(180deg); /* Flip the image horizontally */
-            width: auto;
-        }
-        
-        /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            .background-left-top,
-            .background-right-bottom {
-                max-width: 100vw; /* Set maximum width to 100% of viewport width for smaller screens */
-            }
-        }
-        
-        /* Mobile devices */
-        @media screen and (max-width: 480px) {
-            .background-left-top,
-            .background-right-bottom {
-                display: none; /* Hide background images on mobile devices */
-            }
-        }
-        
-        footer {
+
+        /* Loading animation */
+        .loading-overlay {
             position: fixed;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            background-color: #333;
-            padding: 16px;
-            text-align: center;
-            font-size: 14px;
-            color: #fff;
-            z-index: 1;
-        }
-        
-        /* Adjustments for header items */
-        .header-items {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end; /* Align items to the right */
-            padding: 20px;
-            z-index: 2; /* Ensure header items appear above background images */
-            position: relative;
-        }
-
-        .header-items a {
-            padding: 8px 16px;
-            border-radius: 5px;
-            margin-left: 10px;
-            text-decoration: none;
-            color: #fff;
-            transition: background-color 0.3s ease;
-        }
-
-        .header-items a:hover {
-            background-color: #555;
-        }
-
-        /* Center footer content */
-        footer div {
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 2s ease-in-out forwards; /* Fade in animation */
         }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 16px;
+        @keyframes fadeIn {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Main content */
+        main {
             text-align: center;
-            font-size: 14px;
+        }
+
+        main h1 {
+            font-size: 3em;
+            margin-bottom: 50px; /* Reduce margin for smaller screens */
+            color: transparent;
+            animation: colorChange 2s infinite alternate;
+        }
+
+        .tharsikan {
+            color: transparent;
+            animation: colorChange 2s infinite alternate;
+        }
+
+        main p {
+            font-size: 1.3em;
+            margin-bottom: 50px; /* Reduce margin for smaller screens */
+        }
+
+        .login, .register , .dashboard {
+            font-weight: 900;
+            font-size: 1.5em;
+        }
+
+        @keyframes colorChange {
+            0% {
+                color: #ff0000; /* Red */
+            }
+            25% {
+                color: #ffffff; /* White */
+            }
+            50% {
+                color: #000000; /* Black */
+            }
+            75% {
+                color: #ffffff; /* White */
+            }
+            100% {
+                color: #ff0000; /* Red */
+            }
+        }
+
+        /* Header items */
+        .header-items {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .header-items a {
             color: #fff;
-            z-index: 1;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .header-items a:hover {
+            color: #ff2d20;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            color: #fff;
+            width: 100%; /* Full width */
+            position: absolute;
+            bottom: 0; 
+            color: #000000;
+        }
+
+        /* Footer link */
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #ff2d20;
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 768px) {
+            main h1 {
+                font-size: 2.5em; /* Decrease font size for smaller screens */
+                margin-bottom: 30px; /* Reduce margin for smaller screens */
+            }
+            main p {
+                font-size: 1em; /* Decrease font size for smaller screens */
+                margin-bottom: 30px; /* Reduce margin for smaller screens */
+            }
+        }
+
+        @media only screen and (max-width: 480px) {
+            main h1 {
+                font-size: 2em; /* Further decrease font size for smaller screens */
+                margin-bottom: 20px; /* Reduce margin further for smaller screens */
+            }
+            main p {
+                font-size: 0.9em; /* Further decrease font size for smaller screens */
+                margin-bottom: 20px; /* Reduce margin further for smaller screens */
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Background images -->
-    <img class="background-left-top" src="https://laravel.com/assets/img/welcome/background.svg" />
-    <img class="background-right-bottom" src="https://laravel.com/assets/img/welcome/background.svg" />
+    <!-- Loading overlay -->
+    <div class="loading-overlay">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <rect x="15" y="30" width="10" height="40" fill="#fff">
+                <animate attributeName="y" values="30; 50; 30" dur="1s" repeatCount="indefinite" />
+                <animate attributeName="height" values="40; 20; 40" dur="1s" repeatCount="indefinite" />
+            </rect>
+            <rect x="35" y="30" width="10" height="40" fill="#fff">
+                <animate attributeName="y" values="30; 50; 30" dur="1s" repeatCount="indefinite" />
+                <animate attributeName="height" values="40; 20; 40" dur="1s" repeatCount="indefinite" />
+            </rect>
+            <rect x="55" y="30" width="10" height="40" fill="#fff">
+                <animate attributeName="y" values="30; 50; 30" dur="1s" repeatCount="indefinite" />
+                <animate attributeName="height" values="40; 20; 40" dur="1s" repeatCount="indefinite" />
+            </rect>
+            <rect x="75" y="30" width="10" height="40" fill="#fff">
+                <animate attributeName="y" values="30; 50; 30" dur="1s" repeatCount="indefinite" />
+                <animate attributeName="height" values="40; 20; 40" dur="1s" repeatCount="indefinite" />
+            </rect>
+        </svg>
+    </div>
 
     <!-- Header items -->
     <div class="header-items">
         @if (Route::has('login'))
-        <nav class="-mx-3 flex flex-1 justify-end">
+        <nav>
             @auth
-            <a href="{{ url('/dashboard') }}" class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                Dashboard
-            </a>
+            <a class="dashboard" href="{{ url('/dashboard') }}">Dashboard</a>
             @else
-            <a href="{{ route('login') }}" class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                Log in
-            </a>
+            <a class="login" href="{{ route('login') }}">Log in</a>
 
             @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                Register
-            </a>
+            <a class="register" href="{{ route('register') }}">Register</a>
             @endif
             @endauth
         </nav>
@@ -146,13 +193,14 @@
     </div>
 
     <!-- Main content -->
-    <h1>Student Management System</h1>
-    
+    <main>
+        <h1>Student Management System</h1>
+        <p>Welcome to the Student Management System. Log in or register to get started with managing your students.</p>
+    </main>
+
     <!-- Footer -->
-    
-        <div class="footer">
-            Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-        </div>
-   
+    <footer>
+        <p>Developed with ❤️ by <span class="tharsikan">Tharsikan</span>. Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}.</p>
+    </footer>
 </body>
 </html>
