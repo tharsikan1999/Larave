@@ -7,13 +7,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+    return view('index');
+})->name('index');
 
 Route::get('/dashboard', function () {
     Inertia::render('Dashboard');
@@ -35,6 +30,8 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+
 
 
 

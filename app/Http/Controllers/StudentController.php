@@ -5,16 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Students;
 
+use function Pest\Laravel\get;
+
 class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $students = Students::all();
-        return inertia('Students', ['students' => $students]);
-    }
+    public function index(Request $request)
+{
+    // Fetch paginated students data
+    $students = Students::orderBy('id', 'desc')->paginate(7); // Assuming 10 students per page
+
+    // Pass the paginated data to the Vue component
+    return inertia('Students', [
+        'students' => $students->items(),
+        'currentPage' => $students->currentPage(),
+        'lastPage' => $students->lastPage(),
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
