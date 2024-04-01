@@ -6,7 +6,7 @@ import { defineProps, defineExpose } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-
+import { Link } from "@inertiajs/vue3";
 const userImg = "/DefaultImages/man.png";
 
 const props = defineProps({
@@ -28,8 +28,9 @@ const deleteForm = useForm({
     id: null,
 });
 
-const handleEdit = (route) => {
-    Inertia.visit(route);
+const handleEdit = (studentId) => {
+    const editUrl = route("students.edit", studentId);
+    Inertia.visit(editUrl);
 };
 
 const handleDelete = (id) => {
@@ -64,6 +65,8 @@ defineExpose({
     formatDate,
     getStatusColor,
     handleEdit,
+    handleDelete,
+    paginate,
 });
 </script>
 
@@ -142,16 +145,13 @@ defineExpose({
                             </div>
                         </td>
                         <td class="px-6 py-4 flex items-center justify-evenly">
-                            <a
-                                @click="
-                                    handleEdit(
-                                        route('students.edit', student.id)
-                                    )
-                                "
+                            <!-- Use the Link component to handle navigation -->
+                            <Link
+                                :href="route('students.edit', student.id)"
                                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
                             >
                                 <font-awesome-icon :icon="faEdit" />
-                            </a>
+                            </Link>
                             <a
                                 @click="handleDelete(student.id)"
                                 class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
@@ -171,29 +171,35 @@ defineExpose({
                 aria-label="Pagination"
             >
                 <template v-if="props.currentPage > 1">
-                    <a
-                        href="#"
+                    <Link
+                        :href="
+                            route('students.index', {
+                                page: props.currentPage - 1,
+                            })
+                        "
                         class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                        @click.prevent="paginate(props.currentPage - 1)"
                     >
                         {{ props.currentPage - 1 }}
-                    </a>
+                    </Link>
                 </template>
-                <a
-                    href="#"
+                <Link
+                    :href="route('students.index', { page: props.currentPage })"
                     class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                     aria-current="page"
                 >
                     {{ props.currentPage }}
-                </a>
+                </Link>
                 <template v-if="props.currentPage < props.lastPage">
-                    <a
-                        href="#"
+                    <Link
+                        :href="
+                            route('students.index', {
+                                page: props.currentPage + 1,
+                            })
+                        "
                         class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                        @click.prevent="paginate(props.currentPage + 1)"
                     >
                         {{ props.currentPage + 1 }}
-                    </a>
+                    </Link>
                 </template>
             </nav>
         </div>
