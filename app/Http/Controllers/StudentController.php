@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Students;
+use Inertia\Inertia;
 
 use function Pest\Laravel\get;
 
@@ -38,7 +39,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        
             // Validate the request data
             $request->validate([
                 'email' => 'required|email',
@@ -74,13 +75,12 @@ class StudentController extends Controller
                 'image' => $fileName ? 'images/' . $fileName : null, // Assign the path to the 'image' column
             ]);
     
-            // Redirect with success message if student is created successfully
-            return redirect()->route('students.index')->with('success', 'Student created successfully.');
     
-        } catch (\Exception $e) {
-            // Handle any errors
-            return redirect()->back()->with('error', 'Failed to create student: ' . $e->getMessage());
-        }
+            // Redirect with success message if student is created successfully
+            return inertia::location(route('students.index'));
+
+    
+       
     }
     
 
@@ -96,14 +96,13 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Students $Student)
-    {
-        
-        $student = Students::find($Student->id);
-        
-        return inertia('Student/Edit', ['student' => $student]);
-        
-    }
+
+public function edit(Students $Student)
+{
+    return Inertia('Student/Edit', ['student' => $Student]);
+}
+
+    
     /**
      * Update the specified resource in storage.
      */
@@ -118,12 +117,14 @@ class StudentController extends Controller
             'lastname' => 'required',
             'age' => 'required|numeric | min:1  | max:100',
             'status' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
             
         ]);
         
         // Check if an image file is provided
         if ($request->hasFile('image')) {
+
+            // Delete the file associated with the student if it exists
 
             if ($Student->image) {
                 $filePath = public_path($Student->image);
@@ -149,27 +150,25 @@ class StudentController extends Controller
 
             $Student->update($data);
 
-            // Delete the old image file if it exists
-            
+            return inertia::location(route('students.index'));
 
-            return redirect()->route('students.index')->with('success', 'Student updated successfully');
-
-
-            
 
         } else {
+
             // If no image is provided, set $fileName to null
             $fileName = null;
 
             $data = $request->all();
 
             $Student->update($data);
+            
+            return inertia::location(route('students.index'));
 
         }
        
         
             
-            return redirect()->route('students.index')->with('success', 'Student updated successfully');
+        return inertia::location(route('students.index'));
         
         
         
