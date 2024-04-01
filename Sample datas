@@ -1,0 +1,21 @@
+INSERT INTO students (firstname, lastname, age, status, image, email, created_at, updated_at) VALUES
+('John', 'Doe', 25, 'active', '/DefaultImages/user1.jpg', 'john@example.com', NOW(), NOW()),
+('Jane', 'Smith', 30, 'inactive', '/DefaultImages/user2.jpg', 'jane@example.com', NOW(), NOW()),
+('Alice', 'Johnson', 22, 'active', '/DefaultImages/user3.jpg', 'alice@example.com', NOW(), NOW()),
+('David', 'Williams', 29, 'active', NULL, 'david@example.com', NOW(), NOW()),
+('Michael', 'Brown', 28, 'active', '/DefaultImages/user4.jpg', 'michael@example.com', NOW(), NOW()),
+('Sarah', 'Jones', 27, 'inactive', '/DefaultImages/user5.jpg', 'sarah@example.com', NOW(), NOW()),
+('Emily', 'Taylor', 23, 'active', NULL, 'emily@example.com', NOW(), NOW()),    
+('David', 'Williams', 29, 'active', '/DefaultImages/user6.jpg', 'david2@example.com', NOW(), NOW()),
+('Emily', 'Taylor', 23, 'active', '/DefaultImages/user7.jpg', 'emily2@example.com', NOW(), NOW()),
+('Olivia', 'Garcia', 24, 'active', NULL, 'olivia@example.com', NOW(), NOW()),      
+('Daniel', 'Martinez', 26, 'inactive', '/DefaultImages/user8.jpg', 'daniel@example.com', NOW(), NOW()),
+('Olivia', 'Garcia', 24, 'active', '/DefaultImages/user9.jpg', 'olivia2@example.com', NOW(), NOW()),
+('James', 'Rodriguez', 31, 'active', '/DefaultImages/user10.jpg', 'james@example.com', NOW(), NOW()),
+('Sophia', 'Lopez', 20, 'inactive', '/DefaultImages/user11.jpg', 'sophia@example.com', NOW(), NOW()),
+('Alexander', 'Gonzalez', 32, 'active', '/DefaultImages/user12.jpg', 'alexander@example.com', NOW(), NOW()),
+('Emma', 'Hernandez', 21, 'active', '/DefaultImages/user13.jpg', 'emma@example.com', NOW(), NOW()),
+('Daniel', 'Martinez', 26, 'inactive', NULL, 'daniel2@example.com', NOW(), NOW()), 
+('Matthew', 'Perez', 33, 'active', '/DefaultImages/user14.jpg', 'matthew@example.com', NOW(), NOW()),
+('Ava', 'Torres', 19, 'inactive', '/DefaultImages/user15.jpg', 'ava@example.com', NOW(), NOW());
+
