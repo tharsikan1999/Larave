@@ -18,4 +18,5 @@ INSERT INTO students (firstname, lastname, age, status, image, email, created_at
 ('Daniel', 'Martinez', 26, 'inactive', NULL, 'daniel2@example.com', NOW(), NOW()), 
 ('Matthew', 'Perez', 33, 'active', '/DefaultImages/user14.jpg', 'matthew@example.com', NOW(), NOW()),
 ('Ava', 'Torres', 19, 'inactive', '/DefaultImages/user15.jpg', 'ava@example.com', NOW(), NOW());
+('Ava', 'Torres', 19, 'inactive', '/DefaultImages/user15.jpg', 'ava@example.com', NOW(), NOW());
 
